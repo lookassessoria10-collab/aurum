@@ -25,6 +25,8 @@ type Props = {
   position?: string;
   /** Aproximação fixa do recorte, para igualar a escala entre fotos diferentes */
   zoom?: number;
+  /** Começa em P&B e ganha cor conforme a foto chega ao centro da tela */
+  colorize?: boolean;
 };
 
 // Máscara diagonal inspirada nas linhas de velocidade do símbolo AURUM.
@@ -43,15 +45,26 @@ export function AnimatedImage({
   mono = true,
   position,
   zoom = 1,
+  colorize = false,
 }: Props) {
   const root = useRef<HTMLElement>(null);
   const inner = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      if (!parallax) return;
+      if (!parallax && !colorize) return;
       const mm = gsap.matchMedia();
+      if (colorize) {
+        mm.add(MQ.motion, () => {
+          gsap.fromTo(
+            inner.current,
+            { filter: "grayscale(1) contrast(1.08) brightness(0.92)" },
+            { filter: "grayscale(0) contrast(1) brightness(1)", ease: "none", scrollTrigger: { trigger: root.current, start: "top 80%", end: "center 50%", scrub: true } },
+          );
+        });
+      }
       mm.add(MQ.desktop, () => {
+        if (!parallax) return;
         gsap.fromTo(
           inner.current,
           { yPercent: -6 },
@@ -92,7 +105,7 @@ export function AnimatedImage({
               alt={photo.alt}
               fill
               sizes={sizes}
-              className={cn("object-cover", mono && "photo-mono")}
+              className={cn("object-cover", mono && !colorize && "photo-mono")}
               style={{
                 objectPosition: position,
                 transform: zoom !== 1 ? `scale(${zoom})` : undefined,
@@ -121,7 +134,7 @@ export function AnimatedImage({
       {word && (
         <figcaption
           aria-hidden
-          className={cn("display pointer-events-none absolute bottom-[0.1em] left-[0.25em] z-10 text-bone mix-blend-difference", wordClassName)}
+          className={cn("display pointer-events-none absolute bottom-[0.1em] left-[0.25em] z-10 text-bone [text-shadow:0_4px_28px_rgba(0,0,0,0.55),0_1px_4px_rgba(0,0,0,0.4)]", wordClassName)}
         >
           {word}
         </figcaption>

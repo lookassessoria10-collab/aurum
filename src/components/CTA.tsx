@@ -10,8 +10,6 @@ import { ScrollLine } from "@/components/ui/ScrollLine";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { EASE_SNAP } from "@/lib/utils";
 
-// Na seção dos sócios a ordem é A–B; aqui inverte para B–A, mantendo o equilíbrio.
-const PAIR = [...team.partners].reverse();
 
 export function CTA() {
   const href = contactHref();
@@ -43,20 +41,25 @@ export function CTA() {
           {!WHATSAPP_URL && <p className="mt-6 text-xs tracking-wide text-muted">{cta.pendingNote}</p>}
         </div>
 
-        {/* os dois sócios, sorrindo, com o mesmo tamanho */}
+        {/* os dois sócios, sorrindo, mesmo tamanho e mesma ordem da seção "Quem conduz" */}
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:col-span-5">
-          {PAIR.map((p, i) => (
-            <AnimatedImage
-              key={p.key}
-              photo={p.smile}
-              sizes="(min-width: 1024px) 20vw, 50vw"
-              mono={false}
-              accent={false}
-              position={p.position}
-              zoom={p.zoom}
-              delay={0.15 + i * 0.12}
-              className="aspect-[3/4] w-full"
-            />
+          {team.partners.map((p, i) => (
+            <figure key={p.key}>
+              <AnimatedImage
+                photo={p.smile}
+                sizes="(min-width: 1024px) 20vw, 50vw"
+                mono={false}
+                accent={false}
+                position={p.position}
+                zoom={p.zoom}
+                delay={0.15 + i * 0.12}
+                className="aspect-[3/4] w-full"
+              />
+              <figcaption className="mt-3 flex items-center gap-2 text-[0.62rem] font-bold uppercase tracking-[0.22em] text-bone/80 sm:text-[0.68rem]">
+                <span aria-hidden className="h-[3px] w-4 shrink-0 -skew-x-[30deg] bg-orange" />
+                {p.name}
+              </figcaption>
+            </figure>
           ))}
         </div>
       </div>

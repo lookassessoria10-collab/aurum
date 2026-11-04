@@ -48,31 +48,25 @@ O QR Code só deve ser adicionado quando houver o link oficial.
 `public/aurum/photos/team/` tem as fotos oficiais dos dois sócios (já tratadas na
 identidade, por isso aparecem coloridas). Eles têm sempre o mesmo destaque:
 
-- seção **07 · Quem conduz**: braços cruzados, lado a lado (sócio A à esquerda);
-- seção **14 · Contato**: sorrindo, lado a lado (ordem invertida, sócio B à esquerda).
+- seção **07 · Quem conduz**: braços cruzados, lado a lado;
+- seção **14 · Contato**: sorrindo, lado a lado, na mesma ordem.
 
-Os nomes não foram informados: preencha `name` (e `credential`, se houver) em
-`team.partners` no `src/content/aurum.ts`. O `zoom` iguala a escala dos rostos
-entre fotos com enquadramentos diferentes.
+Vinicius José (camiseta preta) à esquerda e Gustavo Barreto (camiseta branca) à direita.
+Nomes e `credential` (opcional, ex.: CREF) ficam em `team.partners` no
+`src/content/aurum.ts`. O `zoom` iguala a escala dos rostos entre fotos com
+enquadramentos diferentes.
 
-### Treino (pendentes)
+### Treino
 
-As fotos de treino ainda não foram enviadas. Em `public/aurum/photos/` há placeholders
-identificados ("FOTO PENDENTE" + nome do arquivo + sugestão de cena):
+| Onde | Arquivo |
+| --- | --- |
+| 08 · Funcional para a vida real | `photos/funcional/funcional-agachamento-turma.webp` |
+| 09 · Funcional Kids | `photos/kids/kids-barreiras.webp`, `photos/kids/kids-circuito-turma.webp` (faixa larga) |
+| 12 · Galeria | `photos/funcional/funcional-avanco.webp`, `funcional-agilidade.webp`, `funcional-mobilidade.webp` |
 
-```
-functional-adult-01.jpg  4:5   agachamento com kettlebell
-functional-adult-02.jpg  3:2   empurrar / puxar com orientação
-functional-adult-03.jpg  2:1   deslocamento ou salto controlado
-functional-adult-04.jpg  4:5   mobilidade / avanço
-functional-kids-01.jpg   4:5   equilíbrio em circuito
-functional-kids-02.jpg   3:2   saltando pequenos obstáculos
-functional-kids-03.jpg   4:5   correndo e mudando de direção
-```
-
-Basta sobrescrever com a foto real (mesmo nome, JPG, ≥1600px no lado maior).
-O site aplica P&B e os detalhes em laranja automaticamente. Os textos alternativos
-ficam em `src/content/aurum.ts`. `npm run brand:assets` nunca sobrescreve fotos existentes.
+As fotos de treino adulto começam em P&B e ganham cor quando chegam ao centro da tela
+(`colorize` no `AnimatedImage`). As do Kids e dos sócios já vêm tratadas no preto e
+laranja da marca e aparecem coloridas. Textos alternativos ficam em `src/content/aurum.ts`.
 
 Direção: corpos reais em movimento, esforço e execução. Sem poses olhando para a câmera,
 sem estética de fisiculturismo; para crianças, nada de cargas altas.

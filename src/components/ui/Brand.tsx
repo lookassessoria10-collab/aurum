@@ -1,39 +1,41 @@
 import Image from "next/image";
+import { brand } from "@/content/aurum";
 import { cn } from "@/lib/utils";
 
 /*
- * Assinaturas oficiais recortadas das peças da marca (ver scripts/brand-assets.mjs).
- * As proporções originais são preservadas: só a altura é definida via className.
+ * Assinaturas montadas com os recortes oficiais (ver scripts/brand-assets.mjs):
+ * símbolo + wordmark AURUM, sem alterar proporções. A frase de assinatura
+ * ("Movimento que se constrói.") entra como texto, porque as versões do logo
+ * com frase trazem a assinatura antiga desenhada.
  */
 
 type Props = { className?: string; priority?: boolean };
 
-const ALT = "AURUM — Ritmo que se constrói.";
+const ALT = `AURUM — ${brand.tagline}`;
 
-export function BrandLockup({ className, priority }: Props) {
+/** Assinatura vertical: símbolo, AURUM e (opcional) a frase embaixo. */
+export function BrandLockup({ className, priority, tagline = true }: Props & { tagline?: boolean }) {
   return (
-    <Image
-      src="/aurum/brand/aurum-lockup.png"
-      alt={ALT}
-      width={792}
-      height={544}
-      preload={priority}
-      className={className}
-      sizes="(max-width: 768px) 60vw, 400px"
-    />
+    <span role="img" aria-label={ALT} className={cn("inline-flex flex-col items-center", className)}>
+      <Image src="/aurum/brand/aurum-symbol.png" alt="" width={347} height={276} preload={priority} className="h-auto w-[44%]" sizes="200px" />
+      <Image src="/aurum/brand/aurum-wordmark-solo.png" alt="" width={792} height={145} preload={priority} className="mt-[7%] h-auto w-full" sizes="400px" />
+      {tagline && <span className="mt-[5%] whitespace-nowrap font-normal tracking-[0.22em] text-bone">{brand.tagline}</span>}
+    </span>
   );
 }
 
+/** Assinatura horizontal: símbolo à esquerda, AURUM e a frase à direita. */
 export function BrandHorizontal({ className }: Props) {
   return (
-    <Image
-      src="/aurum/brand/aurum-lockup-horizontal.png"
-      alt={ALT}
-      width={475}
-      height={108}
-      className={className}
-      sizes="320px"
-    />
+    <span role="img" aria-label={ALT} className={cn("inline-flex items-center gap-[5%]", className)}>
+      <Image src="/aurum/brand/aurum-symbol.png" alt="" width={347} height={276} className="h-auto w-[26%] shrink-0" sizes="90px" />
+      <span className="flex min-w-0 flex-1 flex-col">
+        <Image src="/aurum/brand/aurum-wordmark-solo.png" alt="" width={792} height={145} className="h-auto w-full" sizes="240px" />
+        <span className="mt-[6%] whitespace-nowrap text-[0.6rem] font-normal tracking-[0.12em] text-bone md:text-[0.68rem] md:tracking-[0.16em]">
+          {brand.tagline}
+        </span>
+      </span>
+    </span>
   );
 }
 

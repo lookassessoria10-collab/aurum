@@ -12,8 +12,8 @@ import { EASE_OUT, EASE_SNAP, lineAccent, lineText } from "@/lib/utils";
 // Trajetória de abertura: entra pela esquerda, ganha direção e sai pela direita.
 const INTRO_PATH = "M -4 78 C 18 80 26 58 42 56 C 58 54 62 70 74 52 C 82 40 90 30 104 24";
 
-const WORD_START = 700;
-const WORD_STEP = 340;
+const WORD_START = 500;
+const WORD_STEP = 270;
 const FINAL_AT = WORD_START + hero.intro.length * WORD_STEP + 150;
 
 export function Hero() {
@@ -33,7 +33,18 @@ export function Hero() {
     }
     const timers = hero.intro.map((_, i) => setTimeout(() => setWord(i), WORD_START + i * WORD_STEP));
     timers.push(setTimeout(() => setFinal(true), FINAL_AT));
-    return () => timers.forEach(clearTimeout);
+    // quem já quer navegar não espera a abertura terminar
+    const skip = () => setFinal(true);
+    const opts = { once: true, passive: true } as const;
+    window.addEventListener("wheel", skip, opts);
+    window.addEventListener("touchstart", skip, opts);
+    window.addEventListener("keydown", skip, { once: true });
+    return () => {
+      timers.forEach(clearTimeout);
+      window.removeEventListener("wheel", skip);
+      window.removeEventListener("touchstart", skip);
+      window.removeEventListener("keydown", skip);
+    };
   }, [reduce]);
 
   // Ao rolar, o bloco principal sobe e perde intensidade
@@ -142,7 +153,7 @@ export function Hero() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: EASE_OUT }}
             >
-              <BrandLockup priority className="h-auto w-24 md:w-28" />
+              <BrandLockup priority tagline={false} className="w-24 md:w-28" />
             </motion.div>
             {/* Todas as palavras ficam empilhadas; cada uma entra por baixo e sai por cima */}
             <div className="relative h-[1.3em] w-full overflow-hidden text-center leading-[1.3] display t-xl">
@@ -199,13 +210,32 @@ export function Hero() {
           transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.5 }}
         >
           <p className="max-w-md text-base leading-relaxed text-bone/75 md:text-lg">{hero.subtitle}</p>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <MagneticButton href={hero.primaryCta.href}>{hero.primaryCta.label}</MagneticButton>
-            <MagneticButton href={hero.secondaryCta.href} variant="text">
-              {hero.secondaryCta.label}
-            </MagneticButton>
-          </div>
+          <MagneticButton href={hero.primaryCta.href}>{hero.primaryCta.label}</MagneticButton>
         </motion.div>
+
+        {/* atalhos para as partes da apresentação */}
+        <motion.nav
+          aria-label={hero.quickLabel}
+          className="mt-8 md:mt-10"
+          initial={{ opacity: 0, y: 16 }}
+          animate={final ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.8, ease: EASE_OUT, delay: 0.7 }}
+        >
+          <p className="eyebrow mb-3 text-muted">{hero.quickLabel}</p>
+          <ul className="-mx-4 flex snap-x gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
+            {hero.quickLinks.map((l, i) => (
+              <li key={l.href} className="shrink-0 snap-start">
+                <a
+                  href={l.href}
+                  className="group flex min-h-11 items-center gap-3 border border-bone/20 bg-ink/40 px-4 text-[0.68rem] font-bold uppercase tracking-[0.2em] text-bone/85 backdrop-blur-sm transition-colors duration-300 hover:border-orange hover:bg-orange hover:text-ink focus-visible:border-orange"
+                >
+                  <span className="tabular-nums text-orange transition-colors group-hover:text-ink">{String(i + 1).padStart(2, "0")}</span>
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </motion.nav>
       </div>
 
       {/* Indicação de scroll */}

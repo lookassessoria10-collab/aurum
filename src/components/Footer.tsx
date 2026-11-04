@@ -25,7 +25,7 @@ export function Footer() {
     <footer className="relative border-t border-line bg-ink pt-16 pb-10 container-x lg:pb-20">
       <div className="flex flex-col gap-12 md:flex-row md:items-end md:justify-between">
         <a href="#topo" aria-label={`${brand.name} — ${footer.backToTop}`} className="w-fit">
-          <BrandHorizontal className="h-auto w-56 md:w-72" />
+          <BrandHorizontal className="w-64 md:w-80" />
         </a>
         <nav aria-label="Rodapé">
           <ul className="flex flex-wrap gap-x-8 gap-y-4">

@@ -14,7 +14,7 @@ const photo = (file: string, alt: string): Photo => ({ src: `/aurum/photos/${fil
 
 export const brand = {
   name: "AURUM",
-  tagline: "Ritmo que se constrói.",
+  tagline: "Movimento que se constrói.",
   edgeWords: ["Movimento", "Disciplina", "Evolução"],
 };
 
@@ -50,7 +50,15 @@ export const hero = {
   subtitle:
     "Funcional e Funcional Kids com acompanhamento pensado para desenvolver o corpo para a vida real.",
   primaryCta: { label: "Conheça a AURUM", href: "#aurum" },
-  secondaryCta: { label: "Como funciona", href: "#como-funciona" },
+  /** Atalhos da abertura para pular direto para cada parte da apresentação */
+  quickLabel: "Ir direto para",
+  quickLinks: [
+    { label: "Funcional", href: "#funcional" },
+    { label: "Funcional Kids", href: "#kids" },
+    { label: "Como funciona", href: "#como-funciona" },
+    { label: "Os sócios", href: "#equipe" },
+    { label: "Contato", href: "#contato" },
+  ],
   scrollHint: "Role para começar",
   edgeLeft: "Funcional · Funcional Kids",
 };
@@ -150,8 +158,7 @@ export const functionalAdult = {
     { strong: "Resistência", rest: "para continuar." },
   ],
   closing: ["O corpo aprende.", "O movimento melhora.", { text: "A rotina sente.", accent: true }] as Line[],
-  photo: photo("functional-adult-01.jpg", "Adulto executando um agachamento com kettlebell, com orientação da equipe AURUM"),
-  photoSecondary: photo("functional-adult-04.jpg", "Adulto em exercício de mobilidade e avanço"),
+  photo: photo("funcional/funcional-agachamento-turma.webp", "Turma fazendo agachamento enquanto o professor orienta o movimento de perto"),
 };
 
 export const kids = {
@@ -165,10 +172,15 @@ export const kids = {
   circuitLabel: "Circuito de movimento",
   circuitShuffle: "Reorganizar circuito",
   stations: ["COORDENAÇÃO", "EQUILÍBRIO", "AGILIDADE", "CONTROLE", "CONFIANÇA", "CONSCIÊNCIA CORPORAL"],
-  photos: [
-    photo("functional-kids-01.jpg", "Criança se equilibrando durante um circuito de movimento"),
-    photo("functional-kids-02.jpg", "Criança saltando pequenos obstáculos em atividade orientada"),
-  ],
+  // Fotos oficiais do Funcional Kids (já tratadas no preto e laranja da marca)
+  photos: {
+    hurdles: photo("kids/kids-barreiras.webp", "Criança sorrindo enquanto salta pequenas barreiras laranja em um circuito de agilidade"),
+    group: photo(
+      "kids/kids-circuito-turma.webp",
+      "Crianças em um circuito com escada de agilidade, plataformas de equilíbrio e barreiras, acompanhadas de perto por um professor",
+    ),
+  },
+  groupCaption: "Atividades orientadas",
 };
 
 export const phases = {
@@ -200,50 +212,48 @@ export const adaptation = {
 
 export const gallery = {
   label: "Galeria de movimento",
+  /** Faixa de palavras que atravessa a tela acima das fotos */
+  kinetic: ["CONTROLE", "FORÇA", "MOVIMENTO", "CONFIANÇA", "DESCOBERTA", "EVOLUÇÃO"],
   items: [
-    { word: "CONTROLE", photo: photo("functional-adult-01.jpg", "Adulto controlando a descida de um agachamento com kettlebell") },
-    { word: "DESCOBERTA", photo: photo("functional-kids-01.jpg", "Criança descobrindo o equilíbrio em um circuito") },
-    { word: "FORÇA", photo: photo("functional-adult-02.jpg", "Adulto empurrando com técnica e intenção") },
-    { word: "CONFIANÇA", photo: photo("functional-kids-02.jpg", "Criança saltando um obstáculo com confiança") },
-    { word: "MOVIMENTO", photo: photo("functional-adult-03.jpg", "Adulto em deslocamento controlado") },
-    { word: "EVOLUÇÃO", photo: photo("functional-kids-03.jpg", "Criança correndo e mudando de direção") },
+    { word: "CONTROLE", photo: photo("funcional/funcional-avanco.webp", "Mulher em posição de avanço, concentrada, controlando o movimento ao ar livre") },
+    { word: "MOVIMENTO", photo: photo("funcional/funcional-agilidade.webp", "Mulher sorrindo enquanto muda de direção entre cones em um treino de agilidade") },
+    { word: "MOBILIDADE", photo: photo("funcional/funcional-mobilidade.webp", "Mulher alongando o ombro em um exercício de mobilidade") },
   ],
 };
 
 export const finalManifesto = {
   lines: ["O CORPO APRENDE.", "O CORPO ADAPTA.", "O CORPO RESPONDE.", "O CORPO EVOLUI."],
   signature: "AURUM.",
-  tagline: "RITMO QUE SE CONSTRÓI.",
+  tagline: "MOVIMENTO QUE SE CONSTRÓI.",
 };
 
 /**
- * Os dois sócios da AURUM. Os nomes não foram informados: preencha `name`
- * (e, se quiser, `credential`, ex.: CREF) quando a AURUM enviar. Enquanto o
- * nome estiver vazio, aparece só o papel. Os dois têm sempre o mesmo destaque.
+ * Os dois sócios da AURUM, sempre com o mesmo destaque.
+ * `credential` é opcional (ex.: CREF) e só aparece se for preenchido.
  */
 export const team = {
   label: "Quem conduz",
   title: ["QUEM CONSTRÓI", { text: "O SEU RITMO.", accent: true }] as Line[],
   lead: "Dois sócios, um mesmo princípio: movimento com direção.",
   text: "Na AURUM, quem treina é acompanhado de perto — no Funcional e no Funcional Kids.",
-  role: "Sócio AURUM",
+  role: "Sócio",
   partners: [
     {
       key: "a",
-      name: "",
+      name: "Vinicius José",
       credential: "",
-      portrait: photo("team/socio-a-bracos-cruzados.webp", "Sócio da AURUM de camiseta preta, de braços cruzados"),
-      smile: photo("team/socio-a-sorrindo.webp", "Sócio da AURUM de camiseta preta, sorrindo, com as mãos na cintura"),
+      portrait: photo("team/socio-a-bracos-cruzados.webp", "Vinicius José, sócio da AURUM, de camiseta preta e braços cruzados"),
+      smile: photo("team/socio-a-sorrindo.webp", "Vinicius José, sócio da AURUM, sorrindo, com as mãos na cintura"),
       // fotos verticais 9:16: o recorte 3:4 sobe para manter rosto e braços
       position: "50% 14%",
       zoom: 1,
     },
     {
       key: "b",
-      name: "",
+      name: "Gustavo Barreto",
       credential: "",
-      portrait: photo("team/socio-b-bracos-cruzados.webp", "Sócio da AURUM de camiseta branca, de braços cruzados"),
-      smile: photo("team/socio-b-sorrindo.webp", "Sócio da AURUM de camiseta branca, sorrindo, de braços cruzados"),
+      portrait: photo("team/socio-b-bracos-cruzados.webp", "Gustavo Barreto, sócio da AURUM, de camiseta branca e braços cruzados"),
+      smile: photo("team/socio-b-sorrindo.webp", "Gustavo Barreto, sócio da AURUM, sorrindo, de braços cruzados"),
       // foto mais aberta: aproxima um pouco para o rosto ficar na mesma escala do outro sócio
       position: "50% 18%",
       zoom: 1.14,

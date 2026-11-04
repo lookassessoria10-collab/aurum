@@ -60,10 +60,22 @@ export function FunctionalKids() {
             ))}
           </div>
         </div>
-        <div className="relative grid grid-cols-5 gap-4 lg:col-span-5">
-          <AnimatedImage photo={kids.photos[0]} sizes="(min-width: 1024px) 24vw, 55vw" className="col-span-3 aspect-[3/4]" accent="left" />
-          <AnimatedImage photo={kids.photos[1]} sizes="(min-width: 1024px) 16vw, 40vw" className="col-span-2 mt-[30%] aspect-[3/4]" delay={0.15} />
-        </div>
+        <AnimatedImage
+          photo={kids.photos.hurdles}
+          sizes="(min-width: 1024px) 38vw, 90vw"
+          mono={false}
+          accent={false}
+          className="aspect-[4/5] w-full max-w-md justify-self-end lg:col-span-5 lg:max-w-none"
+        />
+      </div>
+
+      {/* turma no circuito: faixa larga, no formato original da foto */}
+      <div className="pb-16 container-x md:pb-24">
+        <AnimatedImage photo={kids.photos.group} sizes="100vw" mono={false} accent={false} delay={0.1} className="aspect-[16/9] w-full md:aspect-[2/1]" />
+        <p className="eyebrow mt-5 flex items-center gap-3 text-muted">
+          <span aria-hidden className="h-[3px] w-6 -skew-x-[30deg] bg-orange" />
+          {kids.groupCaption}
+        </p>
       </div>
 
       <motion.div

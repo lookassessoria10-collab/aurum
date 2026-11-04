@@ -51,7 +51,7 @@ export function FinalManifesto() {
       id="manifesto"
       data-section
       aria-labelledby="manifesto-final-title"
-      className={cn("relative bg-black", motionOk ? "h-[240vh]" : "py-24")}
+      className={cn("relative bg-black", motionOk ? "h-[190vh]" : "py-24")}
     >
       <div className={cn("flex flex-col justify-center overflow-hidden container-x", motionOk && "sticky top-0 h-screen")}>
         <h2 id="manifesto-final-title" className="sr-only">

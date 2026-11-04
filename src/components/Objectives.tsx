@@ -60,7 +60,7 @@ export function Objectives() {
   }
 
   return (
-    <section ref={root} id="objetivos" data-section aria-labelledby="objetivos-title" className="relative h-[230vh] bg-ink">
+    <section ref={root} id="objetivos" data-section aria-labelledby="objetivos-title" className="relative h-[180vh] bg-ink">
       <div className="sticky top-0 grid h-screen grid-cols-12 gap-8 overflow-hidden pt-28 pb-14 container-x">
         <div className="col-span-5 flex flex-col justify-between">
           <div>

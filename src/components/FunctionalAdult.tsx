@@ -71,6 +71,8 @@ export function FunctionalAdult() {
           <AnimatedImage
             photo={functionalAdult.photo}
             sizes="(min-width: 1024px) 34vw, 90vw"
+            colorize
+            position="50% 40%"
             className="aspect-square w-full max-w-md justify-self-end lg:col-span-5 lg:max-w-none"
           />
         </div>
@@ -78,7 +80,7 @@ export function FunctionalAdult() {
 
       {/* Padrões de movimento */}
       {motionOk ? (
-        <div ref={stage} className="relative h-[200vh]">
+        <div ref={stage} className="relative h-[140vh]">
           <div className="sticky top-0 flex h-screen items-center overflow-hidden">
             <p className="eyebrow absolute top-24 left-0 text-muted container-x">Padrões fundamentais do movimento</p>
             <ul className="relative h-[1em] w-full t-word">
@@ -131,15 +133,7 @@ export function FunctionalAdult() {
           ))}
         </ul>
 
-        <div className="mt-16 grid gap-10 md:mt-24 lg:grid-cols-12">
-          <AnimatedImage
-            photo={functionalAdult.photoSecondary}
-            sizes="(min-width: 1024px) 30vw, 70vw"
-            accent="left"
-            className="aspect-[4/5] w-1/2 max-w-xs lg:col-span-3 lg:w-full"
-          />
-          <RevealText lines={functionalAdult.closing} as="p" className="display t-lg self-end lg:col-span-8 lg:col-start-5" stagger={0.14} />
-        </div>
+        <RevealText lines={functionalAdult.closing} as="p" className="display t-lg mt-14 md:mt-20 lg:ml-[41.66%]" stagger={0.14} />
       </div>
     </section>
   );

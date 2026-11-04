@@ -8,10 +8,10 @@
  * Quando a AURUM enviar os arquivos vetoriais originais (SVG/AI/PDF), substitua
  * os PNGs em /public/aurum/brand e não rode mais a etapa de recorte.
  *
- * Uso: node scripts/brand-assets.mjs [--placeholders]
+ * Uso: node scripts/brand-assets.mjs
  */
 import sharp from "sharp";
-import { mkdir, writeFile, access } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
@@ -81,7 +81,18 @@ async function icons() {
 
 async function openGraph() {
   const W = 1200, H = 630;
-  const lockup = await sharp(out("public/aurum/brand/aurum-lockup.png")).resize({ height: 330 }).toBuffer();
+  // símbolo + wordmark (as versões com frase trazem a assinatura antiga desenhada)
+  const symbol = await sharp(out("public/aurum/brand/aurum-symbol.png")).resize({ width: 230 }).toBuffer();
+  const word = await sharp(out("public/aurum/brand/aurum-wordmark-solo.png")).resize({ width: 520 }).toBuffer();
+  const sm = await sharp(symbol).metadata();
+  const wm = await sharp(word).metadata();
+  const lockup = await sharp({ create: { width: 520, height: sm.height + 36 + wm.height, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
+    .composite([
+      { input: symbol, top: 0, left: Math.round((520 - sm.width) / 2) },
+      { input: word, top: sm.height + 36, left: 0 },
+    ])
+    .png()
+    .toBuffer();
   const bars = `
     <svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
       <rect width="100%" height="100%" fill="${INK}"/>
@@ -92,11 +103,11 @@ async function openGraph() {
       <line x1="760" y1="${H}" x2="1200" y2="140" stroke="${ORANGE}" stroke-width="2"/>
     </svg>`;
   const buf = await sharp(Buffer.from(bars))
-    .composite([{ input: lockup, top: 120, left: Math.round((W - (await sharp(lockup).metadata()).width) / 2) }])
+    .composite([{ input: lockup, top: 150, left: Math.round((W - (await sharp(lockup).metadata()).width) / 2) }])
     .jpeg({ quality: 86, mozjpeg: true })
     .toBuffer();
   await writeFile(out("src/app/opengraph-image.jpg"), buf);
-  await writeFile(out("src/app/opengraph-image.alt.txt"), "AURUM — Ritmo que se constrói. Funcional e Funcional Kids.");
+  await writeFile(out("src/app/opengraph-image.alt.txt"), "AURUM — Movimento que se constrói. Funcional e Funcional Kids.");
   console.log("open graph ok");
 }
 
@@ -110,47 +121,7 @@ async function textures() {
   console.log("textures ok");
 }
 
-/** Placeholders claramente identificados para as fotos que a AURUM vai enviar. */
-const PHOTOS = [
-  ["functional-adult-01", 1600, 2000, "Adulto · agachamento com kettlebell"],
-  ["functional-adult-02", 2000, 1300, "Adulto · empurrar / puxar com orientação"],
-  ["functional-adult-03", 2400, 1200, "Adulto · deslocamento ou salto controlado"],
-  ["functional-adult-04", 1600, 2000, "Adulto · mobilidade / avanço"],
-  ["functional-kids-01", 1600, 2000, "Kids · equilíbrio em circuito"],
-  ["functional-kids-02", 2000, 1300, "Kids · saltando pequenos obstáculos"],
-  ["functional-kids-03", 1600, 2000, "Kids · correndo e mudando de direção"],
-];
-
-async function placeholders(force) {
-  await mkdir(out("public/aurum/photos"), { recursive: true });
-  for (const [name, w, h, subject] of PHOTOS) {
-    const file = out("public/aurum/photos", `${name}.jpg`);
-    if (!force) {
-      try {
-        await access(file);
-        console.log(`photos/${name}.jpg existe — mantido`);
-        continue;
-      } catch {}
-    }
-    const s = Math.min(w, h) / 1000;
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">
-      <rect width="100%" height="100%" fill="#1C1C1C"/>
-      <g stroke="#2B2B2B" stroke-width="${2 * s}">
-        ${Array.from({ length: 40 }, (_, i) => `<line x1="${i * 90 * s - h}" y1="${h}" x2="${i * 90 * s}" y2="0"/>`).join("")}
-      </g>
-      <rect x="${60 * s}" y="${60 * s}" width="${w - 120 * s}" height="${h - 120 * s}" fill="none" stroke="#3A3A3A" stroke-width="${2 * s}" stroke-dasharray="${14 * s} ${10 * s}"/>
-      <rect x="${100 * s}" y="${120 * s}" width="${70 * s}" height="${8 * s}" fill="${ORANGE}"/>
-      <text x="${100 * s}" y="${190 * s}" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="${44 * s}" fill="#F4F4F4" letter-spacing="${4 * s}">FOTO PENDENTE</text>
-      <text x="${100 * s}" y="${255 * s}" font-family="Arial, Helvetica, sans-serif" font-size="${34 * s}" fill="#9A9A9A">/public/aurum/photos/${name}.jpg</text>
-      <text x="${100 * s}" y="${310 * s}" font-family="Arial, Helvetica, sans-serif" font-size="${34 * s}" fill="${ORANGE}">${subject}</text>
-    </svg>`;
-    await sharp(Buffer.from(svg)).jpeg({ quality: 80, mozjpeg: true }).toFile(file);
-    console.log(`photos/${name}.jpg placeholder`);
-  }
-}
-
 await brand();
 await icons();
 await openGraph();
 await textures();
-await placeholders(process.argv.includes("--placeholders"));

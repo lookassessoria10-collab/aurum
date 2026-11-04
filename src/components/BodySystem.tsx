@@ -91,7 +91,7 @@ export function BodySystem() {
       id="sistema"
       data-section
       aria-labelledby="sistema-title"
-      className="relative bg-ink-2 motion-safe:lg:h-[190vh]"
+      className="relative bg-ink-2 motion-safe:lg:h-[150vh]"
     >
       <div className="grid items-center gap-10 py-24 container-x lg:sticky lg:top-0 lg:h-screen lg:grid-cols-12 lg:gap-8 lg:py-0">
         <div className="lg:col-span-5">

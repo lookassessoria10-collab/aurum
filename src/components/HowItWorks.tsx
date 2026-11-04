@@ -27,7 +27,7 @@ export function HowItWorks() {
       const distance = () => Math.max(0, trackEl.scrollWidth - window.innerWidth);
       // A trilha anda mais rápido que o scroll vertical: menos rolagem para o mesmo percurso
       const setHeight = () => {
-        pinEl.style.height = `${distance() * 0.7 + window.innerHeight}px`;
+        pinEl.style.height = `${distance() * 0.55 + window.innerHeight}px`;
       };
       setHeight();
       ScrollTrigger.addEventListener("refreshInit", setHeight);
