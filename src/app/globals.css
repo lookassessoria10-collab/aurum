@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+/*
+ * Paleta oficial AURUM (lâmina "Tipografia e assinatura"):
+ * Laranja #F8781F · Grafite #2B2B2B · Branco #F4F4F4
+ * O preto profundo é a base escura das peças da marca.
+ */
+@theme {
+  --color-ink: #0a0a0a;
+  --color-ink-2: #121212;
+  --color-graphite: #2b2b2b;
+  --color-graphite-2: #1c1c1c;
+  --color-bone: #f4f4f4;
+  --color-orange: #f8781f;
+  --color-muted: #9a9a9a;
+  --color-line: #2f2f2f;
+
+  /* Montserrat é a fonte de apoio oficial. Para títulos usamos a mesma família
+     em peso Black itálico; troque --font-display se a AURUM enviar a fonte
+     display usada nas peças sociais. */
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color: var(--color-bone);
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 4.5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-orange);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: 4px;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  /* Granulação esportiva muito discreta sobre todo o site */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    z-index: 60;
+    pointer-events: none;
+    background-image: url("/aurum/textures/grain.svg");
+    background-size: 240px;
+    opacity: 0.05;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.86;
+  }
+
+  /* Escala tipográfica fluida — dimensionada para não cortar palavras de até 12 letras no mobile */
+  .t-mega {
+    font-size: clamp(2.6rem, 13.5vw, 15rem);
+  }
+  .t-hero {
+    font-size: clamp(2.5rem, 10.5vw, 12.5rem);
+  }
+  .t-word {
+    font-size: clamp(2.4rem, 11vw, 12rem);
+  }
+  .t-xl {
+    font-size: clamp(2rem, 9vw, 9.5rem);
+  }
+  .t-lg {
+    font-size: clamp(1.9rem, 6.2vw, 6.5rem);
+  }
+  .t-md {
+    font-size: clamp(1.6rem, 3.6vw, 3.6rem);
+  }
+
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+
+  /* Máscara de revelação por linha: folga para acentos e itálico sem mudar o layout */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding: 0.16em 0.14em 0.08em 0;
+    margin: -0.16em 0 -0.08em 0;
+  }
+
+  /* Brilho discreto nas linhas laranja */
+  .glow {
+    filter: drop-shadow(0 0 6px rgba(248, 120, 31, 0.55));
+  }
+
+  .outline-text {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1.5px currentColor;
+  }
+
+  .container-x {
+    padding-inline: 1rem;
+  }
+  @media (min-width: 768px) {
+    .container-x {
+      padding-inline: 2.5rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .container-x {
+      padding-inline: 4rem;
+    }
+  }
+
+  /* Fotos em P&B; o laranja entra como detalhe sobreposto */
+  .photo-mono {
+    filter: grayscale(1) contrast(1.08) brightness(0.92);
+  }
+}
+
+@keyframes scrollHint {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+@keyframes kidsBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
