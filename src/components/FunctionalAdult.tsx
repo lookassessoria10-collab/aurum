@@ -51,7 +51,7 @@ export function FunctionalAdult() {
 
         <div className="relative grid gap-14 lg:grid-cols-12 lg:items-end lg:gap-8">
           <div className="lg:col-span-7">
-            <SectionLabel index="07">{functionalAdult.label}</SectionLabel>
+            <SectionLabel index="08">{functionalAdult.label}</SectionLabel>
             <RevealText id="vida-real-title" lines={functionalAdult.title} className="display t-xl mt-10" />
             <div className="mt-10 max-w-lg space-y-3 text-lg leading-relaxed text-bone/70 md:text-xl">
               {functionalAdult.subtitle.map((p, i) => (

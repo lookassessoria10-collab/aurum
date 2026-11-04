@@ -19,6 +19,12 @@ type Props = {
   word?: string;
   wordClassName?: string;
   delay?: number;
+  /** P&B editorial (padrão). Fotos já tratadas na identidade, como as dos sócios, usam false. */
+  mono?: boolean;
+  /** Enquadramento dentro do recorte (object-position) */
+  position?: string;
+  /** Aproximação fixa do recorte, para igualar a escala entre fotos diferentes */
+  zoom?: number;
 };
 
 // Máscara diagonal inspirada nas linhas de velocidade do símbolo AURUM.
@@ -34,6 +40,9 @@ export function AnimatedImage({
   word,
   wordClassName,
   delay = 0,
+  mono = true,
+  position,
+  zoom = 1,
 }: Props) {
   const root = useRef<HTMLElement>(null);
   const inner = useRef<HTMLDivElement>(null);
@@ -78,7 +87,18 @@ export function AnimatedImage({
               shown: { scale: 1, transition: { duration: 1.6, ease: EASE_SNAP, delay } },
             }}
           >
-            <Image src={photo.src} alt={photo.alt} fill sizes={sizes} className="photo-mono object-cover" />
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              sizes={sizes}
+              className={cn("object-cover", mono && "photo-mono")}
+              style={{
+                objectPosition: position,
+                transform: zoom !== 1 ? `scale(${zoom})` : undefined,
+                transformOrigin: position ?? "50% 50%",
+              }}
+            />
           </motion.div>
         </div>
         {accent && (

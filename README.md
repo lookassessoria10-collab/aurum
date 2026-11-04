@@ -43,7 +43,21 @@ O QR Code só deve ser adicionado quando houver o link oficial.
 
 ## Fotos
 
-As fotos ainda não foram enviadas. Em `public/aurum/photos/` há placeholders
+### Sócios
+
+`public/aurum/photos/team/` tem as fotos oficiais dos dois sócios (já tratadas na
+identidade, por isso aparecem coloridas). Eles têm sempre o mesmo destaque:
+
+- seção **07 · Quem conduz**: braços cruzados, lado a lado (sócio A à esquerda);
+- seção **14 · Contato**: sorrindo, lado a lado (ordem invertida, sócio B à esquerda).
+
+Os nomes não foram informados: preencha `name` (e `credential`, se houver) em
+`team.partners` no `src/content/aurum.ts`. O `zoom` iguala a escala dos rostos
+entre fotos com enquadramentos diferentes.
+
+### Treino (pendentes)
+
+As fotos de treino ainda não foram enviadas. Em `public/aurum/photos/` há placeholders
 identificados ("FOTO PENDENTE" + nome do arquivo + sugestão de cena):
 
 ```

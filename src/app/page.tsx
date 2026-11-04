@@ -8,6 +8,7 @@ import { FunctionalDefinition } from "@/components/FunctionalDefinition";
 import { FunctionalKids } from "@/components/FunctionalKids";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { Founders } from "@/components/Founders";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Manifesto } from "@/components/Manifesto";
 import { MovementGallery } from "@/components/MovementGallery";
@@ -34,6 +35,7 @@ export default function Home() {
         <BodySystem />
         <Objectives />
         <HowItWorks />
+        <Founders />
         <FunctionalAdult />
         <FunctionalKids />
         <Phases />

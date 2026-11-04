@@ -15,7 +15,7 @@ export function Phases() {
   return (
     <section id="fases" data-section aria-labelledby="fases-title" className="relative overflow-hidden bg-ink py-20 md:py-28">
       <div className="container-x">
-        <SectionLabel index="09">{phases.label}</SectionLabel>
+        <SectionLabel index="10">{phases.label}</SectionLabel>
         <h2 id="fases-title" className="sr-only">
           {phases.heading}
         </h2>

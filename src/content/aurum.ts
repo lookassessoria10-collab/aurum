@@ -34,6 +34,7 @@ export const sectionNames: Record<string, string> = {
   sistema: "O corpo como sistema",
   objetivos: "Objetivos",
   "como-funciona": "Como funciona",
+  equipe: "Quem conduz",
   "vida-real": "Vida real",
   kids: "Funcional Kids",
   fases: "Adulto e Kids",
@@ -213,6 +214,41 @@ export const finalManifesto = {
   lines: ["O CORPO APRENDE.", "O CORPO ADAPTA.", "O CORPO RESPONDE.", "O CORPO EVOLUI."],
   signature: "AURUM.",
   tagline: "RITMO QUE SE CONSTRÓI.",
+};
+
+/**
+ * Os dois sócios da AURUM. Os nomes não foram informados: preencha `name`
+ * (e, se quiser, `credential`, ex.: CREF) quando a AURUM enviar. Enquanto o
+ * nome estiver vazio, aparece só o papel. Os dois têm sempre o mesmo destaque.
+ */
+export const team = {
+  label: "Quem conduz",
+  title: ["QUEM CONSTRÓI", { text: "O SEU RITMO.", accent: true }] as Line[],
+  lead: "Dois sócios, um mesmo princípio: movimento com direção.",
+  text: "Na AURUM, quem treina é acompanhado de perto — no Funcional e no Funcional Kids.",
+  role: "Sócio AURUM",
+  partners: [
+    {
+      key: "a",
+      name: "",
+      credential: "",
+      portrait: photo("team/socio-a-bracos-cruzados.webp", "Sócio da AURUM de camiseta preta, de braços cruzados"),
+      smile: photo("team/socio-a-sorrindo.webp", "Sócio da AURUM de camiseta preta, sorrindo, com as mãos na cintura"),
+      // fotos verticais 9:16: o recorte 3:4 sobe para manter rosto e braços
+      position: "50% 14%",
+      zoom: 1,
+    },
+    {
+      key: "b",
+      name: "",
+      credential: "",
+      portrait: photo("team/socio-b-bracos-cruzados.webp", "Sócio da AURUM de camiseta branca, de braços cruzados"),
+      smile: photo("team/socio-b-sorrindo.webp", "Sócio da AURUM de camiseta branca, sorrindo, de braços cruzados"),
+      // foto mais aberta: aproxima um pouco para o rosto ficar na mesma escala do outro sócio
+      position: "50% 18%",
+      zoom: 1.14,
+    },
+  ],
 };
 
 export const cta = {

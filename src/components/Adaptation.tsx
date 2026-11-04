@@ -71,7 +71,7 @@ export function Adaptation() {
   return (
     <section id="adaptacao" data-section aria-labelledby="adaptacao-title" className="relative overflow-hidden bg-ink-2 py-20 md:py-28">
       <div className="container-x">
-        <SectionLabel index="10">{adaptation.label}</SectionLabel>
+        <SectionLabel index="11">{adaptation.label}</SectionLabel>
         <RevealText id="adaptacao-title" lines={adaptation.title} className="display t-lg mt-10" />
 
         <div className="mt-12 grid gap-10 md:mt-16 lg:grid-cols-12 lg:gap-8">

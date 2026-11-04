@@ -13,7 +13,7 @@ export function MovementGallery() {
   return (
     <section id="galeria" data-section aria-labelledby="galeria-title" className="relative overflow-hidden bg-ink py-20 md:py-28">
       <div className="container-x">
-        <SectionLabel index="11">{gallery.label}</SectionLabel>
+        <SectionLabel index="12">{gallery.label}</SectionLabel>
         <h2 id="galeria-title" className="sr-only">
           {gallery.label}
         </h2>

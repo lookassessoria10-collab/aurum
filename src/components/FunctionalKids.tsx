@@ -33,7 +33,7 @@ export function FunctionalKids() {
     <section id="kids" data-section aria-labelledby="kids-title" className="relative overflow-hidden bg-[#0f0f0f]">
       <div className="relative pt-20 pb-8 container-x md:pt-28">
         <ScrollLine d={ZIGZAG} className="glow inset-x-0 top-6 h-40 w-full md:h-52" start="top 85%" end="top 25%" strokeWidth={3} head />
-        <SectionLabel index="08">{kids.label}</SectionLabel>
+        <SectionLabel index="09">{kids.label}</SectionLabel>
         <RevealText lines={kids.preTitle} as="p" className="display t-lg mt-10" from="left" stagger={0.05} />
       </div>
 
