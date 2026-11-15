@@ -14,12 +14,12 @@ import { EASE_OUT } from "@/lib/utils";
 // Linhas mais nervosas: zigue-zague com quiques curtos
 const ZIGZAG = "M -2 20 L 12 8 L 20 26 L 30 10 L 38 30 L 50 12 L 58 34 L 70 14 L 80 36 L 92 18 L 102 30";
 
-/** O símbolo oficial saltando ao lado do título: mais energia sem virar visual infantil. */
+/** O ícone oficial saltando ao lado do título: mais energia sem virar visual infantil. */
 function HoppingSymbol() {
   return (
     <motion.span
       aria-hidden
-      className="mb-[0.1em] inline-block w-[0.9em] shrink-0"
+      className="mb-[0.1em] inline-block w-[0.72em] shrink-0"
       animate={{ y: ["0em", "-0.34em", "0em", "-0.12em", "0em"] }}
       transition={{ duration: 1.1, times: [0, 0.35, 0.62, 0.8, 1], ease: "easeOut", repeat: Infinity, repeatDelay: 0.5 }}
     >

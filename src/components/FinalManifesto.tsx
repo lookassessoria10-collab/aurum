@@ -80,7 +80,7 @@ export function FinalManifesto() {
 
         <div className={cn("flex flex-col items-start gap-6", motionOk ? "absolute inset-0 justify-center container-x" : "mt-20")}>
           <div data-fm-symbol>
-            <BrandSymbol className="h-auto w-24 md:w-36" />
+            <BrandSymbol className="h-auto w-20 md:w-28" />
           </div>
           <p className="line-mask">
             <span data-fm-sign className="display t-mega block origin-left">

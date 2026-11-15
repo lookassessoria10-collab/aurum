@@ -153,7 +153,7 @@ export function Hero() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: EASE_OUT }}
             >
-              <BrandLockup priority tagline={false} className="w-24 md:w-28" />
+              <BrandLockup priority className="w-40 md:w-48" />
             </motion.div>
             {/* Todas as palavras ficam empilhadas; cada uma entra por baixo e sai por cima */}
             <div className="relative h-[1.3em] w-full overflow-hidden text-center leading-[1.3] display t-xl">

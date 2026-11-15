@@ -29,7 +29,7 @@ type Props = {
   colorize?: boolean;
 };
 
-// Máscara diagonal inspirada nas linhas de velocidade do símbolo AURUM.
+// Máscara diagonal: corte rápido e preciso, na linguagem das diagonais da marca.
 const HIDDEN = "polygon(0% 0%, 0% 0%, -32% 100%, -32% 100%)";
 const SHOWN = "polygon(0% 0%, 132% 0%, 100% 100%, -32% 100%)";
 

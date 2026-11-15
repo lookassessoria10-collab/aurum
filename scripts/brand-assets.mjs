@@ -1,9 +1,8 @@
 /**
  * Gera os assets da marca a partir das peças oficiais em /brand-source.
  *
- * Nada aqui redesenha a marca: o logotipo, o símbolo e o wordmark são recortados
- * pixel a pixel da lâmina "Conceito da marca" e da peça "Outras aplicações",
- * e só o fundo escuro é removido (chave por luminância).
+ * Nada aqui redesenha a marca: logotipo, ícone, wordmark e frase são recortados
+ * pixel a pixel do PNG transparente oficial (marca 2026, "Movimento que se constrói.").
  *
  * Quando a AURUM enviar os arquivos vetoriais originais (SVG/AI/PDF), substitua
  * os PNGs em /public/aurum/brand e não rode mais a etapa de recorte.
@@ -21,44 +20,30 @@ const out = (...p) => path.join(root, ...p);
 const INK = "#0A0A0A";
 const ORANGE = "#F8781F";
 
-/** Remove o fundo escuro texturizado preservando branco e laranja. */
-async function keyed(file, crop, { bg = 27, lo = 50, hi = 150 } = {}) {
-  const { data, info } = await sharp(file)
-    .extract(crop)
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-  for (let i = 0; i < data.length; i += 4) {
-    const max = Math.max(data[i], data[i + 1], data[i + 2]);
-    const a = Math.min(1, Math.max(0, (max - lo) / (hi - lo)));
-    if (a > 0) {
-      for (let k = 0; k < 3; k++) {
-        data[i + k] = Math.max(0, Math.min(255, Math.round((data[i + k] - bg * (1 - a)) / a)));
-      }
-    }
-    data[i + 3] = Math.round(a * 255);
-  }
-  return sharp(data, { raw: info }).trim({ threshold: 1 }).png({ compressionLevel: 9 }).toBuffer();
+/** Recorta uma área do PNG transparente oficial e remove as bordas vazias. */
+async function crop(file, area) {
+  const part = await sharp(file).extract(area).png().toBuffer();
+  return sharp(part).trim({ threshold: 10 }).png({ compressionLevel: 9 }).toBuffer();
 }
 
 async function brand() {
   await mkdir(out("public/aurum/brand"), { recursive: true });
-  const concept = src("conceito-da-marca.webp");
-  const others = src("outras-aplicacoes.webp");
+  // Marca 2026: ícone claro, AURUM laranja e "Movimento que se constrói." (PNG 2000x2000 transparente)
+  const master = src("marca-2026-transparente.png");
   const pieces = {
-    // Assinatura principal (vertical): símbolo + AURUM + "Ritmo que se constrói."
-    "aurum-lockup.png": [concept, { left: 975, top: 250, width: 820, height: 565 }],
-    // Símbolo isolado
-    "aurum-symbol.png": [concept, { left: 1175, top: 250, width: 370, height: 295 }],
-    // Wordmark com assinatura
-    "aurum-wordmark.png": [concept, { left: 975, top: 570, width: 820, height: 240 }],
-    // Wordmark sem a frase (usos pequenos)
-    "aurum-wordmark-solo.png": [concept, { left: 975, top: 570, width: 820, height: 165 }],
-    // Assinatura horizontal, como aplicada nas peças da marca
-    "aurum-lockup-horizontal.png": [others, { left: 88, top: 52, width: 530, height: 130 }],
+    // Assinatura completa: ícone + AURUM + frase
+    "aurum-lockup-2026.png": { left: 300, top: 380, width: 1400, height: 1000 },
+    // Ícone isolado
+    "aurum-symbol-2026.png": { left: 760, top: 400, width: 480, height: 560 },
+    // AURUM + frase
+    "aurum-wordmark-2026.png": { left: 300, top: 1000, width: 1400, height: 380 },
+    // Só AURUM (usos pequenos)
+    "aurum-wordmark-solo-2026.png": { left: 420, top: 1000, width: 1160, height: 255 },
+    // Só a frase, na tipografia original da marca
+    "aurum-tagline-2026.png": { left: 300, top: 1270, width: 1400, height: 110 },
   };
-  for (const [name, [file, crop]] of Object.entries(pieces)) {
-    const buf = await keyed(file, crop);
+  for (const [name, area] of Object.entries(pieces)) {
+    const buf = await crop(master, area);
     await writeFile(out("public/aurum/brand", name), buf);
     const m = await sharp(buf).metadata();
     console.log(`brand/${name}`, m.width, "x", m.height);
@@ -66,7 +51,7 @@ async function brand() {
 }
 
 async function icons() {
-  const symbol = await sharp(out("public/aurum/brand/aurum-symbol.png")).resize(360).toBuffer();
+  const symbol = await sharp(out("public/aurum/brand/aurum-symbol-2026.png")).resize(360).toBuffer();
   const tile = (size, pad) =>
     sharp({ create: { width: 512, height: 512, channels: 4, background: INK } })
       .composite([{ input: symbol, gravity: "center" }])
@@ -75,24 +60,13 @@ async function icons() {
       .then((b) => sharp(b).resize(size - pad * 2).extend({ top: pad, bottom: pad, left: pad, right: pad, background: INK }).png().toBuffer());
   await writeFile(out("src/app/icon.png"), await tile(512, 0));
   await writeFile(out("src/app/apple-icon.png"), await tile(180, 0));
-  await writeFile(out("public/aurum/icons/aurum-symbol-512.png"), await tile(512, 0));
+  await writeFile(out("public/aurum/icons/aurum-icone-2026-512.png"), await tile(512, 0));
   console.log("icons ok");
 }
 
 async function openGraph() {
   const W = 1200, H = 630;
-  // símbolo + wordmark (as versões com frase trazem a assinatura antiga desenhada)
-  const symbol = await sharp(out("public/aurum/brand/aurum-symbol.png")).resize({ width: 230 }).toBuffer();
-  const word = await sharp(out("public/aurum/brand/aurum-wordmark-solo.png")).resize({ width: 520 }).toBuffer();
-  const sm = await sharp(symbol).metadata();
-  const wm = await sharp(word).metadata();
-  const lockup = await sharp({ create: { width: 520, height: sm.height + 36 + wm.height, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } })
-    .composite([
-      { input: symbol, top: 0, left: Math.round((520 - sm.width) / 2) },
-      { input: word, top: sm.height + 36, left: 0 },
-    ])
-    .png()
-    .toBuffer();
+  const lockup = await sharp(out("public/aurum/brand/aurum-lockup-2026.png")).resize({ height: 360 }).toBuffer();
   const bars = `
     <svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
       <rect width="100%" height="100%" fill="${INK}"/>
@@ -103,7 +77,7 @@ async function openGraph() {
       <line x1="760" y1="${H}" x2="1200" y2="140" stroke="${ORANGE}" stroke-width="2"/>
     </svg>`;
   const buf = await sharp(Buffer.from(bars))
-    .composite([{ input: lockup, top: 150, left: Math.round((W - (await sharp(lockup).metadata()).width) / 2) }])
+    .composite([{ input: lockup, top: 120, left: Math.round((W - (await sharp(lockup).metadata()).width) / 2) }])
     .jpeg({ quality: 86, mozjpeg: true })
     .toBuffer();
   await writeFile(out("src/app/opengraph-image.jpg"), buf);

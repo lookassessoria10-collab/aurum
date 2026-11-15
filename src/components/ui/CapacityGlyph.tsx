@@ -117,7 +117,7 @@ export function CapacityGlyph({ kind, active }: Props) {
       break;
     }
     case "potencia": {
-      // Linhas de velocidade + diagonal que dispara (eco do símbolo AURUM)
+      // Linhas de velocidade + diagonal que dispara
       body = (
         <>
           {[20, 34, 48].map((y, i) => (

@@ -33,9 +33,13 @@ O QR Code só deve ser adicionado quando houver o link oficial.
 
 ## Marca
 
-- `brand-source/` guarda as peças oficiais recebidas. A pasta fica fora do repositório (está no `.gitignore`); para rodar o script, coloque ali as lâminas da marca com os mesmos nomes.
-- `public/aurum/brand/` tem logotipo, símbolo e wordmark **recortados pixel a pixel**
-  dessas peças, só com o fundo removido — `npm run brand:assets` regenera.
+- Marca atual (2026): ícone com kettlebell, AURUM e a frase **"Movimento que se constrói."**
+- `brand-source/` guarda os arquivos oficiais recebidos (fora do repositório, no `.gitignore`).
+  O script usa `brand-source/marca-2026-transparente.png` (PNG 2000×2000 com fundo transparente).
+- `public/aurum/brand/` tem `aurum-lockup-2026.png` (assinatura completa), `aurum-symbol-2026.png` (ícone),
+  `aurum-wordmark-solo-2026.png` (AURUM), `aurum-wordmark-2026.png` (AURUM + frase) e `aurum-tagline-2026.png`
+  (só a frase), **recortados pixel a pixel** do PNG oficial — `npm run brand:assets` regenera
+  esses arquivos, o favicon e a imagem de compartilhamento.
   Quando chegarem os vetores originais (SVG/AI/PDF), substitua os PNGs mantendo os nomes.
 - Fonte de apoio oficial: **Montserrat**. Os títulos usam Montserrat Black Itálico.
   Se a AURUM enviar a fonte display das peças sociais, troque `--font-display` em
