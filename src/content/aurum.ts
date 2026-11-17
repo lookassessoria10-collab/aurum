@@ -251,11 +251,11 @@ export const team = {
     },
     {
       key: "b",
-      name: "Gustavo Felipe",
+      name: "Gustavo Barreto",
       phone: "+55 71 99368-8084",
       credential: "",
-      portrait: photo("team/socio-b-bracos-cruzados.webp", "Gustavo Felipe, sócio da AURUM, de camiseta branca e braços cruzados"),
-      smile: photo("team/socio-b-sorrindo.webp", "Gustavo Felipe, sócio da AURUM, sorrindo, de braços cruzados"),
+      portrait: photo("team/socio-b-bracos-cruzados.webp", "Gustavo Barreto, sócio da AURUM, de camiseta branca e braços cruzados"),
+      smile: photo("team/socio-b-sorrindo.webp", "Gustavo Barreto, sócio da AURUM, sorrindo, de braços cruzados"),
       // foto mais aberta: aproxima um pouco para o rosto ficar na mesma escala do outro sócio
       position: "50% 18%",
       zoom: 1.14,

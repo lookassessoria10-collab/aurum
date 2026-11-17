@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { cta, team } from "@/content/aurum";
 import { AnimatedImage } from "@/components/ui/AnimatedImage";
+import { InstagramLink } from "@/components/ui/InstagramLink";
 import { PartnerWhatsApp } from "@/components/ui/PartnerWhatsApp";
 import { RevealText } from "@/components/ui/RevealText";
 import { ScrollLine } from "@/components/ui/ScrollLine";
@@ -35,6 +36,9 @@ export function CTA() {
                 <PartnerWhatsApp partner={partner} />
               </li>
             ))}
+            <li className="sm:col-span-2">
+              <InstagramLink />
+            </li>
           </ul>
         </div>
 

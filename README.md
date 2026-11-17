@@ -31,7 +31,7 @@ NEXT_PUBLIC_SITE_URL=https://dominio-oficial.com.br
 ```
 
 Sem `NEXT_PUBLIC_WHATSAPP_URL`, o WhatsApp do rodapé aponta para a seção de contato.
-Sem Instagram, o item do rodapé fica sem link.
+O Instagram usa o perfil oficial `@aurumperfomance` por padrão.
 O QR Code só deve ser adicionado quando houver o link oficial.
 
 ## Marca
@@ -58,7 +58,7 @@ identidade, por isso aparecem coloridas). Eles têm sempre o mesmo destaque:
 - seção **07 · Quem conduz**: braços cruzados, lado a lado;
 - seção **14 · Contato**: sorrindo, lado a lado, na mesma ordem.
 
-Vinicius José (camiseta preta) à esquerda e Gustavo Felipe (camiseta branca) à direita.
+Vinicius José (camiseta preta) à esquerda e Gustavo Barreto (camiseta branca) à direita.
 Nomes e `credential` (opcional, ex.: CREF) ficam em `team.partners` no
 `src/content/aurum.ts`. O `zoom` iguala a escala dos rostos entre fotos com
 enquadramentos diferentes.
