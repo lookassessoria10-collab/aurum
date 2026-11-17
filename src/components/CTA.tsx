@@ -1,18 +1,15 @@
 "use client";
 
 import { motion } from "motion/react";
-import { contactHref, WHATSAPP_URL } from "@/config/site";
 import { cta, team } from "@/content/aurum";
 import { AnimatedImage } from "@/components/ui/AnimatedImage";
-import { MagneticButton } from "@/components/ui/MagneticButton";
+import { PartnerWhatsApp } from "@/components/ui/PartnerWhatsApp";
 import { RevealText } from "@/components/ui/RevealText";
 import { ScrollLine } from "@/components/ui/ScrollLine";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { EASE_SNAP } from "@/lib/utils";
 
-
 export function CTA() {
-  const href = contactHref();
   return (
     <section id="contato" data-section aria-labelledby="contato-title" className="relative overflow-hidden bg-ink py-24 md:py-32">
       {/* Bloco laranja diagonal que entra pelo canto, como nas peças da marca */}
@@ -32,13 +29,13 @@ export function CTA() {
           <RevealText id="contato-title" lines={cta.title} className="display mt-10 text-[clamp(1.7rem,7vw,7.5rem)]" stagger={0.1} />
           <p className="mt-10 max-w-md text-lg leading-relaxed text-bone/75 md:text-xl">{cta.text}</p>
 
-          <div className="mt-12 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-            <MagneticButton href={href}>{cta.primary}</MagneticButton>
-            <MagneticButton href={href} variant="ghost" className="bg-ink">
-              {cta.secondary}
-            </MagneticButton>
-          </div>
-          {!WHATSAPP_URL && <p className="mt-6 text-xs tracking-wide text-muted">{cta.pendingNote}</p>}
+          <ul className="mt-8 grid max-w-md gap-3 sm:grid-cols-2">
+            {team.partners.map((partner) => (
+              <li key={partner.key}>
+                <PartnerWhatsApp partner={partner} />
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* os dois sócios, sorrindo, mesmo tamanho e mesma ordem da seção "Quem conduz" */}

@@ -14,12 +14,15 @@ npm run build
 
 | O quê | Onde |
 | --- | --- |
-| Todos os textos | `src/content/aurum.ts` |
-| WhatsApp, Instagram, URL do site | `src/config/site.ts` (ou `.env.local`, veja abaixo) |
+| Textos e WhatsApp dos profissionais | `src/content/aurum.ts` |
+| WhatsApp institucional, Instagram, URL do site | `src/config/site.ts` (ou `.env.local`, veja abaixo) |
 | Cores e escala tipográfica | `src/app/globals.css` (`@theme`) |
 | Metadata / SEO / Open Graph | `src/app/layout.tsx`, `src/app/opengraph-image.jpg` |
 
-### Contatos (nada foi inventado)
+### Contatos
+
+Os botões em “Quem conduz”, “Contato” e no atalho flutuante usam os números
+de `team.partners` em `src/content/aurum.ts`. Informe o código do país, o DDD e o número.
 
 ```env
 NEXT_PUBLIC_WHATSAPP_URL=https://wa.me/55XXXXXXXXXXX
@@ -27,8 +30,8 @@ NEXT_PUBLIC_INSTAGRAM_URL=https://instagram.com/...
 NEXT_PUBLIC_SITE_URL=https://dominio-oficial.com.br
 ```
 
-Sem `WHATSAPP_URL`, os botões da seção final apontam para `#contato` e aparece a nota
-"Canal de atendimento em configuração.". Sem Instagram, o item do rodapé fica sem link.
+Sem `NEXT_PUBLIC_WHATSAPP_URL`, o WhatsApp do rodapé aponta para a seção de contato.
+Sem Instagram, o item do rodapé fica sem link.
 O QR Code só deve ser adicionado quando houver o link oficial.
 
 ## Marca
@@ -55,7 +58,7 @@ identidade, por isso aparecem coloridas). Eles têm sempre o mesmo destaque:
 - seção **07 · Quem conduz**: braços cruzados, lado a lado;
 - seção **14 · Contato**: sorrindo, lado a lado, na mesma ordem.
 
-Vinicius José (camiseta preta) à esquerda e Gustavo Barreto (camiseta branca) à direita.
+Vinicius José (camiseta preta) à esquerda e Gustavo Felipe (camiseta branca) à direita.
 Nomes e `credential` (opcional, ex.: CREF) ficam em `team.partners` no
 `src/content/aurum.ts`. O `zoom` iguala a escala dos rostos entre fotos com
 enquadramentos diferentes.
