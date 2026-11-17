@@ -8,8 +8,8 @@
 /** Link completo do WhatsApp, ex.: https://wa.me/55XXXXXXXXXXX */
 export const WHATSAPP_URL: string = process.env.NEXT_PUBLIC_WHATSAPP_URL ?? "";
 
-/** Perfil oficial no Instagram, ex.: https://instagram.com/aurum */
-export const INSTAGRAM_URL: string = process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "";
+/** Perfil oficial no Instagram. */
+export const INSTAGRAM_URL = process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/aurumperfomance/";
 
 /** URL pública do site (usada em Open Graph e links canônicos). */
 export const SITE_URL: string = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
