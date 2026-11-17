@@ -241,6 +241,7 @@ export const team = {
     {
       key: "a",
       name: "Vinicius José",
+      phone: "+55 71 99954-1593",
       credential: "",
       portrait: photo("team/socio-a-bracos-cruzados.webp", "Vinicius José, sócio da AURUM, de camiseta preta e braços cruzados"),
       smile: photo("team/socio-a-sorrindo.webp", "Vinicius José, sócio da AURUM, sorrindo, com as mãos na cintura"),
@@ -250,10 +251,11 @@ export const team = {
     },
     {
       key: "b",
-      name: "Gustavo Barreto",
+      name: "Gustavo Felipe",
+      phone: "+55 71 99368-8084",
       credential: "",
-      portrait: photo("team/socio-b-bracos-cruzados.webp", "Gustavo Barreto, sócio da AURUM, de camiseta branca e braços cruzados"),
-      smile: photo("team/socio-b-sorrindo.webp", "Gustavo Barreto, sócio da AURUM, sorrindo, de braços cruzados"),
+      portrait: photo("team/socio-b-bracos-cruzados.webp", "Gustavo Felipe, sócio da AURUM, de camiseta branca e braços cruzados"),
+      smile: photo("team/socio-b-sorrindo.webp", "Gustavo Felipe, sócio da AURUM, sorrindo, de braços cruzados"),
       // foto mais aberta: aproxima um pouco para o rosto ficar na mesma escala do outro sócio
       position: "50% 18%",
       zoom: 1.14,
@@ -264,10 +266,7 @@ export const team = {
 export const cta = {
   label: "Contato",
   title: ["COMECE", { text: "PELO MOVIMENTO.", accent: true }] as Line[],
-  text: "Conheça o Funcional e o Funcional Kids AURUM.",
-  primary: "Quero conhecer a AURUM",
-  secondary: "Falar com a equipe",
-  pendingNote: "Canal de atendimento em configuração.",
+  text: "Conheça o Funcional e o Funcional Kids AURUM. Fale com a equipe pelo WhatsApp.",
 };
 
 export const footer = {

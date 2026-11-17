@@ -3,30 +3,39 @@
 import { motion } from "motion/react";
 import { team } from "@/content/aurum";
 import { AnimatedImage } from "@/components/ui/AnimatedImage";
+import { PartnerWhatsApp } from "@/components/ui/PartnerWhatsApp";
 import { RevealText } from "@/components/ui/RevealText";
 import { ScrollLine } from "@/components/ui/ScrollLine";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { EASE_OUT } from "@/lib/utils";
 
-/** Nome (quando houver) e papel, com o mesmo peso para os dois sócios. */
-export function PartnerCaption({ name, credential, delay = 0 }: { name: string; credential: string; delay?: number }) {
+type Partner = (typeof team.partners)[number];
+
+function PartnerCaption({ partner, delay }: { partner: Partner; delay: number }) {
+  const { name, credential } = partner;
+
   return (
-    <motion.figcaption
-      className="mt-5 flex items-start gap-3"
-      initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.8 }}
-      transition={{ duration: 0.7, ease: EASE_OUT, delay }}
-    >
-      <span aria-hidden className="mt-[0.45em] h-[3px] w-6 shrink-0 -skew-x-[30deg] bg-orange" />
-      <span className="flex flex-col gap-1">
-        {name && <span className="display text-[clamp(1.2rem,2.2vw,2rem)]">{name}</span>}
-        <span className="eyebrow text-bone/70">
-          {team.role}
-          {credential && <span className="text-muted"> · {credential}</span>}
+    <figcaption className="mt-5">
+      <motion.div
+        className="flex items-start gap-3"
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.8 }}
+        transition={{ duration: 0.7, ease: EASE_OUT, delay }}
+      >
+        <span aria-hidden className="mt-[0.45em] h-[3px] w-6 shrink-0 -skew-x-[30deg] bg-orange" />
+        <span className="flex flex-col gap-1">
+          {name && <span className="display text-[clamp(1.2rem,2.2vw,2rem)]">{name}</span>}
+          <span className="eyebrow text-bone/70">
+            {team.role}
+            {credential && <span className="text-muted"> · {credential}</span>}
+          </span>
         </span>
-      </span>
-    </motion.figcaption>
+      </motion.div>
+      <div className="mt-4 w-fit">
+        <PartnerWhatsApp partner={partner} showName={false} />
+      </div>
+    </figcaption>
   );
 }
 
@@ -67,7 +76,7 @@ export function Founders() {
                 delay={i * 0.12}
                 className="aspect-[3/4] w-full"
               />
-              <PartnerCaption name={p.name} credential={p.credential} delay={0.3 + i * 0.12} />
+              <PartnerCaption partner={p} delay={0.3 + i * 0.12} />
             </figure>
           ))}
         </div>

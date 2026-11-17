@@ -2,6 +2,7 @@ import { Adaptation } from "@/components/Adaptation";
 import { BodySystem } from "@/components/BodySystem";
 import { CTA } from "@/components/CTA";
 import { FinalManifesto } from "@/components/FinalManifesto";
+import { FloatingContacts } from "@/components/FloatingContacts";
 import { Footer } from "@/components/Footer";
 import { FunctionalAdult } from "@/components/FunctionalAdult";
 import { FunctionalDefinition } from "@/components/FunctionalDefinition";
@@ -44,6 +45,7 @@ export default function Home() {
         <FinalManifesto />
         <CTA />
       </main>
+      <FloatingContacts />
       <Footer />
       <ScrollProgress />
       <Cursor />

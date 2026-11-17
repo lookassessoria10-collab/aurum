@@ -40,7 +40,11 @@ export function Footer() {
               <Social href={INSTAGRAM_URL} label={footer.social.instagram} />
             </li>
             <li>
-              <Social href={WHATSAPP_URL} label={footer.social.whatsapp} />
+              {WHATSAPP_URL ? (
+                <Social href={WHATSAPP_URL} label={footer.social.whatsapp} />
+              ) : (
+                <a href="#contato" className={link}>{footer.social.whatsapp}</a>
+              )}
             </li>
           </ul>
         </nav>

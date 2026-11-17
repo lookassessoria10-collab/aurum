@@ -1,12 +1,13 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { brand, hero } from "@/content/aurum";
 import { BrandLockup } from "@/components/ui/Brand";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { scalePath, useElementSize } from "@/lib/geometry";
 import { gsap, MQ, useGSAP } from "@/lib/gsap";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 import { EASE_OUT, EASE_SNAP, lineAccent, lineText } from "@/lib/utils";
 
 // Trajetória de abertura: entra pela esquerda, ganha direção e sai pela direita.
@@ -17,7 +18,7 @@ const WORD_STEP = 270;
 const FINAL_AT = WORD_START + hero.intro.length * WORD_STEP + 150;
 
 export function Hero() {
-  const reduce = useReducedMotion();
+  const reduce = useMediaQuery("(prefers-reduced-motion: reduce)");
   const [word, setWord] = useState(-1);
   const [final, setFinal] = useState(false);
   const root = useRef<HTMLElement>(null);
@@ -241,7 +242,7 @@ export function Hero() {
       {/* Indicação de scroll */}
       <motion.a
         href="#aurum"
-        className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.4em] text-bone/55 hover:text-bone lg:left-auto lg:right-16 lg:translate-x-0"
+        className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.4em] text-bone/55 hover:text-bone lg:left-auto lg:right-44 lg:translate-x-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: final ? 1 : 0 }}
         transition={{ delay: 1 }}
