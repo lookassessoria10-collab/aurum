@@ -101,6 +101,12 @@ No fim, um resumo com repetições completas, amplitude por repetição e corre�
 - Detecção de pose: MediaPipe Pose Landmarker (`@mediapipe/tasks-vision`), roda no navegador.
   A imagem não é gravada nem enviada; o modelo e o runtime vêm de CDN (jsDelivr e Google Storage).
 - A câmera exige HTTPS (ou `localhost`).
+- **Treinos completos** (`src/coach/workouts.ts`): sequências de 7 a 8 exercícios por foco
+  (membros inferiores, superiores, cardio, core, corpo inteiro e mobilidade), em casa e na academia.
+  Cada treino define a meta de cada exercício, o descanso, as **séries por exercício** (academia: 3)
+  e as **voltas** (circuitos em casa: 2) — tudo ajustável na tela do treino. O coach passa de uma
+  série para outra sozinho; no descanso, a voz anuncia o próximo exercício e se o celular fica de
+  lado ou de frente. No fim, um resumo do treino inteiro.
 - Exercícios, critérios e frases da voz: `src/coach/exercises.ts` (organizados por região do corpo).
   Cada exercício define a vista (de lado ou de frente), o sinal medido (ex.: flexão do joelho),
   a amplitude esperada e as correções.

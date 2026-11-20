@@ -4,16 +4,20 @@ import { motion } from "motion/react";
 import { EASE_OUT } from "@/lib/utils";
 import { exercisesFor, REGIONS } from "../exercises";
 import type { Env } from "../types";
+import { workoutsFor } from "../workouts";
 import { HeroFigure, RegionFigure } from "./Glyphs";
 
 const STEPS = [
-  { n: "01", t: "Escolha", d: "Onde vai treinar e qual movimento vai fazer. São exercícios organizados por parte do corpo." },
+  { n: "01", t: "Escolha", d: "Um treino completo, com 7 ou 8 exercícios em sequência, ou um exercício avulso, organizado por parte do corpo." },
   { n: "02", t: "Alinhe", d: "Posicione o celular de frente ou de lado. A voz avisa quando o corpo inteiro estiver no enquadramento." },
   { n: "03", t: "Execute", d: "O coach conta as repetições, mede a amplitude e corrige a execução pela voz, em tempo real." },
 ];
 
 export function Home({ onPick }: { onPick: (env: Env) => void }) {
-  const counts = { casa: exercisesFor("casa").length, academia: exercisesFor("academia").length };
+  const counts = {
+    casa: `${workoutsFor("casa").length} treinos · ${exercisesFor("casa").length} exercícios`,
+    academia: `${workoutsFor("academia").length} treinos · ${exercisesFor("academia").length} exercícios`,
+  };
 
   return (
     <div>
@@ -42,8 +46,8 @@ export function Home({ onPick }: { onPick: (env: Env) => void }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.7, ease: EASE_OUT }}
           >
-            Escolha o exercício, alinhe o corpo com a câmera e execute. O coach acompanha cada repetição, mede a amplitude do movimento e
-            corrige sua execução pela voz.
+            Escolha um treino completo ou um exercício, alinhe o corpo com a câmera e execute. O coach acompanha cada repetição, mede a
+            amplitude do movimento e corrige sua execução pela voz.
           </motion.p>
 
           <div className="mt-9 grid gap-3 sm:grid-cols-2">
@@ -65,7 +69,7 @@ export function Home({ onPick }: { onPick: (env: Env) => void }) {
                 <span aria-hidden className="absolute inset-0 origin-left -skew-x-12 scale-x-0 bg-orange transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-x-[1.3]" />
                 <span className="relative block">
                   <span className="flex items-center justify-between">
-                    <span className="eyebrow text-orange transition-colors group-hover:text-ink">{counts[c.env]} exercícios</span>
+                    <span className="eyebrow text-orange transition-colors group-hover:text-ink">{counts[c.env]}</span>
                     <svg viewBox="0 0 24 24" className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:text-ink" aria-hidden>
                       <path d="M4 12 H19 M13 6 L19 12 L13 18" stroke="currentColor" strokeWidth="2" fill="none" />
                     </svg>

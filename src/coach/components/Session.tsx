@@ -17,7 +17,14 @@ type Props = {
   target: number;
   source: SessionSource;
   onFinish: (result: SessionResult) => void;
+  /** Saiu antes de começar (ou pulou, dentro de um treino). */
   onExit: () => void;
+  /** Dentro de um treino completo: posição na sequência. */
+  workout?: { index: number; total: number; name: string; set: number; sets: number };
+  /** Encerrar o treino inteiro (com o resultado parcial deste exercício, se houver). */
+  onQuit?: (result: SessionResult | null) => void;
+  initialFacing?: "user" | "environment";
+  onFacing?: (facing: "user" | "environment") => void;
 };
 
 const PRAISE = ["Boa!", "Isso!", "Execução perfeita!", "Ótimo ritmo!", "Amplitude completa!", "Continua assim!"];
@@ -32,7 +39,7 @@ function cameraError(err: unknown) {
   return "Não foi possível abrir a câmera.";
 }
 
-export function Session({ exercise, variant, target, source, onFinish, onExit }: Props) {
+export function Session({ exercise, variant, target, source, onFinish, onExit, workout, onQuit, initialFacing = "user", onFacing }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -40,7 +47,7 @@ export function Session({ exercise, variant, target, source, onFinish, onExit }:
   // Motor novo a cada série (o componente é remontado a cada série)
   const [engine] = useState(() => new CoachEngine(exercise, variant, { target, source: source.kind }));
 
-  const [facing, setFacing] = useState<"user" | "environment">("user");
+  const [facing, setFacing] = useState<"user" | "environment">(initialFacing);
   const [status, setStatus] = useState<"loading" | "running" | "error">("loading");
   const [error, setError] = useState<string | null>(null);
   const [snap, setSnap] = useState<Snapshot | null>(null);
@@ -76,6 +83,14 @@ export function Session({ exercise, variant, target, source, onFinish, onExit }:
   useEffect(() => {
     finishRef.current = finish;
   }, [finish]);
+
+  // "Sair": dentro de um treino encerra o treino todo; fora dele, encerra a série
+  const quit = () => {
+    if (!onQuit) return finish();
+    if (doneRef.current) return;
+    doneRef.current = true;
+    onQuit(engine.phase === "active" ? engine.result() : null);
+  };
 
   useEffect(() => {
     setCanvasFont(getComputedStyle(document.body).fontFamily);
@@ -146,8 +161,13 @@ export function Session({ exercise, variant, target, source, onFinish, onExit }:
             speak(e.seconds >= 10 ? `Faltam ${e.seconds} segundos` : String(e.seconds), { interrupt: true });
             break;
           case "target":
-            speak(exercise.mode === "hold" ? "Tempo concluído! Excelente trabalho." : "Meta concluída! Excelente trabalho.", { interrupt: true });
-            window.setTimeout(() => finishRef.current(), 1700);
+            speak(
+              workout
+                ? exercise.mode === "hold" ? "Tempo concluído!" : "Meta concluída!"
+                : exercise.mode === "hold" ? "Tempo concluído! Excelente trabalho." : "Meta concluída! Excelente trabalho.",
+              { interrupt: true },
+            );
+            window.setTimeout(() => finishRef.current(), workout ? 1200 : 1700);
             break;
         }
       }
@@ -325,8 +345,8 @@ export function Session({ exercise, variant, target, source, onFinish, onExit }:
   return (
     <div className="fixed inset-0 z-[70] flex flex-col bg-ink text-bone">
       {/* Barra superior */}
-      <div className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-bone/10 px-3 md:h-16 md:px-6">
-        <button type="button" onClick={finish} className="flex h-10 items-center gap-2 pr-2 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-bone/70 hover:text-bone">
+      <div className="relative flex h-14 shrink-0 items-center justify-between gap-3 border-b border-bone/10 px-3 md:h-16 md:px-6">
+        <button type="button" onClick={quit} className="flex h-10 items-center gap-2 pr-2 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-bone/70 hover:text-bone">
           <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
             <path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
@@ -334,8 +354,19 @@ export function Session({ exercise, variant, target, source, onFinish, onExit }:
         </button>
         <div className="min-w-0 text-center">
           <p className="display truncate text-base md:text-xl">{exercise.name}</p>
-          <p className="truncate text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-orange">{isVideo ? "Análise do vídeo" : variant.label}</p>
+          <p className="truncate text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-orange">
+            {isVideo
+              ? "Análise do vídeo"
+              : workout
+                ? `${workout.sets > 1 ? `Série ${workout.set}/${workout.sets} · ` : ""}${workout.index + 1} de ${workout.total} · ${variant.view === "lateral" ? "de lado" : "de frente"}`
+                : variant.label}
+          </p>
         </div>
+        {workout && (
+          <span aria-hidden className="absolute inset-x-0 -bottom-px h-[2px] bg-bone/10">
+            <span className="block h-full bg-orange" style={{ width: `${(workout.index / workout.total) * 100}%` }} />
+          </span>
+        )}
         <div className="flex items-center gap-1">
           <IconButton label={voice ? "Desligar voz" : "Ligar voz"} onClick={toggleVoice} pressed={voice}>
             {voice ? (
@@ -345,7 +376,14 @@ export function Session({ exercise, variant, target, source, onFinish, onExit }:
             )}
           </IconButton>
           {!isVideo && (
-            <IconButton label="Trocar câmera" onClick={() => setFacing((f) => (f === "user" ? "environment" : "user"))}>
+            <IconButton
+              label="Trocar câmera"
+              onClick={() => {
+                const next = facing === "user" ? "environment" : "user";
+                setFacing(next);
+                onFacing?.(next);
+              }}
+            >
               <path d="M4 8 H7 L9 5 H15 L17 8 H20 V19 H4 Z M9 13 A3 3 0 0 1 15 12 M15 12 L16.5 10.5 M15 12 L13.2 11" />
             </IconButton>
           )}
@@ -485,8 +523,8 @@ export function Session({ exercise, variant, target, source, onFinish, onExit }:
                     <button type="button" onClick={() => setAttempt((a) => a + 1)} className="bg-orange px-5 py-3 text-[0.7rem] font-bold uppercase tracking-[0.2em] text-ink">
                       Tentar de novo
                     </button>
-                    <button type="button" onClick={onExit} className="border border-bone/30 px-5 py-3 text-[0.7rem] font-bold uppercase tracking-[0.2em]">
-                      Voltar
+                    <button type="button" onClick={() => (onQuit ? onQuit(null) : onExit())} className="border border-bone/30 px-5 py-3 text-[0.7rem] font-bold uppercase tracking-[0.2em]">
+                      {onQuit ? "Encerrar treino" : "Voltar"}
                     </button>
                   </div>
                 </div>
@@ -521,7 +559,7 @@ export function Session({ exercise, variant, target, source, onFinish, onExit }:
             </button>
           )}
           <button type="button" onClick={finish} className="bg-orange px-4 py-2.5 text-[0.65rem] font-bold uppercase tracking-[0.2em] text-ink md:px-6 md:py-3">
-            {isVideo ? "Parar análise" : active ? "Encerrar série" : "Cancelar"}
+            {isVideo ? "Parar análise" : workout ? (active ? "Próximo" : "Pular exercício") : active ? "Encerrar série" : "Cancelar"}
           </button>
         </div>
       </div>

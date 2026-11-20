@@ -5,22 +5,30 @@ import { useMemo, useState } from "react";
 import { cn, EASE_OUT } from "@/lib/utils";
 import { exercisesFor, LEVELS, REGIONS } from "../exercises";
 import type { Env, Exercise, RegionId } from "../types";
+import { workoutsFor, type Workout } from "../workouts";
 import { AngleGlyph, RegionFigure } from "./Glyphs";
+import { WorkoutCard } from "./Workouts";
+
+export type LibraryTab = "treinos" | "exercicios";
 
 type Props = {
   env: Env;
   region: RegionId | "todos";
+  tab: LibraryTab;
   onEnv: (env: Env) => void;
   onRegion: (r: RegionId | "todos") => void;
+  onTab: (t: LibraryTab) => void;
   onOpen: (ex: Exercise) => void;
+  onOpenWorkout: (w: Workout) => void;
   onBack: () => void;
 };
 
 const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
-export function Library({ env, region, onEnv, onRegion, onOpen, onBack }: Props) {
+export function Library({ env, region, tab, onEnv, onRegion, onTab, onOpen, onOpenWorkout, onBack }: Props) {
   const [query, setQuery] = useState("");
   const all = useMemo(() => exercisesFor(env), [env]);
+  const workouts = useMemo(() => workoutsFor(env), [env]);
   const list = useMemo(() => {
     const q = norm(query.trim());
     return all.filter(
@@ -41,8 +49,10 @@ export function Library({ env, region, onEnv, onRegion, onOpen, onBack }: Props)
 
       <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
         <div>
-          <p className="eyebrow text-orange">{all.length} exercícios {env === "casa" ? "sem equipamento" : "na academia"}</p>
-          <h1 className="display t-lg mt-3">Escolha o movimento</h1>
+          <p className="eyebrow text-orange">
+            {tab === "treinos" ? `${workouts.length} treinos completos` : `${all.length} exercícios`} {env === "casa" ? "sem equipamento" : "na academia"}
+          </p>
+          <h1 className="display t-lg mt-3">{tab === "treinos" ? "Escolha o treino" : "Escolha o movimento"}</h1>
         </div>
         <div role="radiogroup" aria-label="Onde você vai treinar" className="flex border border-bone/20 p-1">
           {(["casa", "academia"] as const).map((e) => (
@@ -64,8 +74,53 @@ export function Library({ env, region, onEnv, onRegion, onOpen, onBack }: Props)
         </div>
       </div>
 
+      {/* Treinos completos × exercícios avulsos */}
+      <div role="tablist" aria-label="Tipo" className="mt-8 flex gap-6 border-b border-line md:gap-10">
+        {(
+          [
+            { id: "treinos", label: "Treinos", extra: " completos", n: workouts.length },
+            { id: "exercicios", label: "Exercícios", extra: " avulsos", n: all.length },
+          ] as const
+        ).map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            aria-selected={tab === t.id}
+            onClick={() => onTab(t.id)}
+            className={cn("relative pb-3 text-left transition-colors", tab === t.id ? "text-bone" : "text-bone/45 hover:text-bone/80")}
+          >
+            <span className="display text-xl md:text-2xl">
+              {t.label}
+              <span className="hidden sm:inline">{t.extra}</span>
+            </span>
+            <span className={cn("ml-2 text-xs font-semibold tabular-nums", tab === t.id ? "text-orange" : "")}>{t.n}</span>
+            {tab === t.id && <motion.span layoutId="lib-tab" className="absolute inset-x-0 -bottom-px h-[3px] bg-orange" transition={{ duration: 0.4, ease: EASE_OUT }} />}
+          </button>
+        ))}
+      </div>
+
+      {tab === "treinos" ? (
+        <AnimatePresence mode="wait">
+          <motion.ul
+            key={`w-${env}`}
+            className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-3"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: EASE_OUT }}
+          >
+            {workouts.map((w, i) => (
+              <li key={w.id}>
+                <WorkoutCard workout={w} index={i} onOpen={() => onOpenWorkout(w)} />
+              </li>
+            ))}
+          </motion.ul>
+        </AnimatePresence>
+      ) : (
+        <>
       {/* Regiões */}
-      <div className="sticky top-14 z-20 -mx-4 mt-8 border-y border-line bg-ink/90 px-4 backdrop-blur-md md:top-16 md:-mx-10 md:px-10 xl:-mx-16 xl:px-16">
+      <div className="sticky top-14 z-20 -mx-4 mt-6 border-y border-line bg-ink/90 px-4 backdrop-blur-md md:top-16 md:-mx-10 md:px-10 xl:-mx-16 xl:px-16">
         <div className="flex gap-1 overflow-x-auto py-3 [scrollbar-width:none]" role="tablist" aria-label="Parte do corpo">
           {[{ id: "todos" as const, short: "Todos" }, ...REGIONS].map((r) => {
             const on = region === r.id;
@@ -136,6 +191,8 @@ export function Library({ env, region, onEnv, onRegion, onOpen, onBack }: Props)
           ))}
         </motion.div>
       </AnimatePresence>
+        </>
+      )}
     </div>
   );
 }

@@ -53,7 +53,9 @@ const PARTS = {
   ),
 };
 
-const HIGHLIGHT: Record<RegionId, (keyof typeof PARTS)[]> = {
+const HIGHLIGHT: Record<RegionId | "superiores" | "inferiores", (keyof typeof PARTS)[]> = {
+  superiores: ["chest", "shoulders", "arms"],
+  inferiores: ["hips", "legs"],
   pernas: ["hips", "legs"],
   empurrar: ["chest", "shoulders", "arms"],
   puxar: ["shoulders", "arms", "core"],
@@ -62,7 +64,7 @@ const HIGHLIGHT: Record<RegionId, (keyof typeof PARTS)[]> = {
   mobilidade: ["joints"],
 };
 
-export function RegionFigure({ region, active, className }: { region: RegionId | "todos"; active?: boolean; className?: string }) {
+export function RegionFigure({ region, active, className }: { region: keyof typeof HIGHLIGHT | "todos"; active?: boolean; className?: string }) {
   const on = region === "todos" ? [] : HIGHLIGHT[region];
   const base = (["head", "chest", "shoulders", "arms", "core", "hips", "legs"] as const).filter((p) => !on.includes(p));
   return (
