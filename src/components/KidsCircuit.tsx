@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { kids } from "@/content/aurum";
 import { useMediaQuery } from "@/lib/useMediaQuery";
@@ -51,7 +51,7 @@ function Marker({ kind, on }: { kind: number; on: boolean }) {
  * percorre o caminho. Reorganiza sozinho enquanto visível; botão para o usuário.
  */
 export function KidsCircuit() {
-  const reduce = useReducedMotion();
+  const reduce = useMediaQuery("(prefers-reduced-motion: reduce)");
   const tall = useMediaQuery("(max-width: 767px)");
   const layouts = tall ? TALL : WIDE;
   const [layout, setLayout] = useState(0);
