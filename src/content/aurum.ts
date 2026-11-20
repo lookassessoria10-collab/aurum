@@ -26,6 +26,9 @@ export const nav = [
   { id: "contato", label: "Contato" },
 ] as const;
 
+/** Página do AURUM Coach (personal trainer com a câmera), fora da apresentação. */
+export const coachLink = { href: "/coach", label: "Coach", hint: "Personal na câmera" } as const;
+
 /** Nome curto de cada seção, usado no indicador de progresso. */
 export const sectionNames: Record<string, string> = {
   topo: "Abertura",

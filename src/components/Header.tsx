@@ -1,8 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { brand, nav } from "@/content/aurum";
+import { brand, coachLink, nav } from "@/content/aurum";
 import { BrandInline, BrandSymbol } from "@/components/ui/Brand";
 import { cn, EASE_OUT, EASE_SNAP } from "@/lib/utils";
 
@@ -109,6 +110,26 @@ export function Header() {
                     </motion.a>
                   </li>
                 ))}
+                <li className="overflow-hidden">
+                  <motion.div
+                    initial={{ y: "105%" }}
+                    animate={{ y: "0%" }}
+                    transition={{ duration: 0.7, ease: EASE_OUT, delay: 0.25 + nav.length * 0.06 }}
+                  >
+                    <Link
+                      data-menu-link
+                      href={coachLink.href}
+                      onClick={() => setOpen(false)}
+                      className="display t-lg flex items-baseline gap-4 py-1 text-orange transition-colors hover:text-bone focus-visible:text-bone"
+                    >
+                      <span aria-hidden className="font-sans text-xs font-semibold not-italic tracking-[0.3em] text-orange">
+                        {String(nav.length + 1).padStart(2, "0")}
+                      </span>
+                      {coachLink.label}
+                      <span className="font-sans text-[0.6rem] font-semibold not-italic tracking-[0.24em] text-bone/60">{coachLink.hint}</span>
+                    </Link>
+                  </motion.div>
+                </li>
               </ul>
             </nav>
             <motion.div
@@ -158,6 +179,19 @@ export function Header() {
                 </a>
               </li>
             ))}
+            <li>
+              <Link
+                href={coachLink.href}
+                title={coachLink.hint}
+                className="flex items-center gap-2 border border-orange/70 px-3.5 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-bone transition-colors hover:bg-orange hover:text-ink focus-visible:bg-orange focus-visible:text-ink"
+              >
+                <span aria-hidden className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inset-0 animate-ping rounded-full bg-orange opacity-75" />
+                  <span className="relative h-1.5 w-1.5 rounded-full bg-orange" />
+                </span>
+                {coachLink.label}
+              </Link>
+            </li>
           </ul>
         </nav>
 

@@ -85,6 +85,27 @@ sem estética de fisiculturismo; para crianças, nada de cargas altas.
 - `prefers-reduced-motion`: sequências fixas viram layout estático, deslocamentos são removidos.
 - Abaixo de 1024px: sem trilha horizontal, sem parallax, sem cursor customizado.
 
+## AURUM Coach (`/coach`)
+
+Personal trainer com a câmera, em página própria. No site, só entra o botão **Coach** no menu
+(desktop e mobile); o resto da apresentação não muda.
+
+Fluxo: escolher **Em casa** (sem equipamento) ou **Na academia** → parte do corpo → exercício →
+alinhar o corpo com a câmera (a voz orienta) → executar. O coach conta as repetições, mede a
+amplitude e corrige pela voz (pt-BR). Na academia também dá para **analisar um vídeo já gravado**.
+No fim, um resumo com repetições completas, amplitude por repetição e correções mais frequentes.
+
+- Detecção de pose: MediaPipe Pose Landmarker (`@mediapipe/tasks-vision`), roda no navegador.
+  A imagem não é gravada nem enviada; o modelo e o runtime vêm de CDN (jsDelivr e Google Storage).
+- A câmera exige HTTPS (ou `localhost`).
+- Exercícios, critérios e frases da voz: `src/coach/exercises.ts` (organizados por região do corpo).
+  Cada exercício define a vista (de lado ou de frente), o sinal medido (ex.: flexão do joelho),
+  a amplitude esperada e as correções.
+- Cálculo dos ângulos: `src/coach/lib/signals.ts`. Contagem, alinhamento e correções:
+  `src/coach/lib/engine.ts`. Telas: `src/coach/components/`.
+- É uma ferramenta de apoio: o texto da página deixa claro que não substitui a orientação de um
+  profissional de educação física.
+
 ## Estrutura
 
 ```
@@ -94,6 +115,8 @@ src/components/          seções (Hero, Manifesto, FunctionalDefinition, BodySy
 src/components/ui/       KineticText, ScrollLine, SectionLabel, AnimatedImage, MagneticButton,
                          RevealText, Cursor, ScrollProgress, Brand, CapacityGlyph
 src/content/aurum.ts     conteúdo
+src/app/coach/           página do AURUM Coach
+src/coach/               biblioteca de exercícios, análise de movimento e telas do Coach
 src/config/site.ts       links configuráveis
 scripts/brand-assets.mjs recorte da marca, ícones, OG, textura e placeholders
 ```
